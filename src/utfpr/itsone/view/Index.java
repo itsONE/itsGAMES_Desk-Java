@@ -1,5 +1,10 @@
 package utfpr.itsone.view;
 
+import utfpr.itsone.controller.CreateObj;
+import utfpr.itsone.data.GameData;
+import utfpr.itsone.model.core.Game;
+import utfpr.itsone.view.body.Content;
+import utfpr.itsone.view.body.Header;
 import utfpr.itsone.view.menu.Bar;
 import utfpr.itsone.view.menu.ComponentResizer;
 import utfpr.itsone.view.menu.TopBar;
@@ -18,6 +23,8 @@ public class Index extends JFrame {
 
     public Index() throws HeadlessException {
         super(NAME);
+        new CreateObj();
+        Game game = GameData.getData().getGames().get(0);
         setUndecorated(true);
         setPreferredSize(DIMENSIONS);
         setMinimumSize(new Dimension(WIDTH*3,HEIGHT*5));
@@ -36,9 +43,13 @@ public class Index extends JFrame {
 
     public void init() {
         add(bar, BorderLayout.WEST);
-        JPanel content = new JPanel(new BorderLayout());
-        add(content, BorderLayout.CENTER);
-        content.add(topBar, BorderLayout.NORTH);
+        JPanel nav = new JPanel(new BorderLayout());
+        add(nav, BorderLayout.CENTER);
+        nav.add(topBar, BorderLayout.NORTH);
+        JPanel body = new JPanel(new BorderLayout());
+        nav.add(body,BorderLayout.CENTER);
+        body.add(new Header(),BorderLayout.NORTH);
+        body.add(new Content(this), BorderLayout.CENTER);
     }
 
     public void update(){
