@@ -2,21 +2,26 @@ package utfpr.itsone.view.body;
 
 import utfpr.itsone.data.GameData;
 import utfpr.itsone.model.core.Game;
+import utfpr.itsone.view.Index;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-public class Content extends JPanel {
+public class Content extends JPanel implements MouseListener {
     private ArrayList<GameView> gameViews = new ArrayList<>();
+    private Index parent;
+    private boolean clicked = false;
 
-    public Content(JFrame parent){
+    public Content(Index parent){
         super();
-        //setLayout(new GridLayout(5,10));
+        this.parent = parent;
+        setPreferredSize(new Dimension(0,700));
         setLayout(new FlowLayout());
-        JScrollPane scrollBar = new JScrollPane(this);
-        //this.setPreferredSize(new Dimension(100,100));
-        //parent.add(scrollBar);
         setBackground(new Color(0x000715));
         for (Game game : GameData.getData().getGames()){
             GameView gameView = new GameView(game);
@@ -31,7 +36,58 @@ public class Content extends JPanel {
             gameView.revalidate();
             gameView.setOpaque(false);
             gameView.repaint();
+            gameView.addMouseListener(this);
         }
 
+    }
+
+    public void active(){
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent arg0) {
+        if (arg0.getSource() instanceof GameView) {
+            Game game = ((GameView) arg0.getSource()).getGame();
+            clicked = true;
+            parent.getHeader().getTitle().setForeground(new Color(0xffffff));
+            parent.getHeader().getTitle().setText(game.getName());
+            parent.getHeader().setDescription(game.getDescription());
+            parent.getHeader().create();
+            parent.getHeader().setGame(game);
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent arg0) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent arg0) {
+        if (arg0.getSource() instanceof GameView) {
+            if (!clicked) {
+                Game game = ((GameView) arg0.getSource()).getGame();
+                parent.getHeader().getTitle().setForeground(new Color(0xffffff));
+                parent.getHeader().getTitle().setText(game.getName());
+                parent.getHeader().setGame(game);
+            }
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent arg0) {
+        if (arg0.getSource() instanceof GameView) {
+            if (!clicked) {
+                parent.getHeader().getTitle().setForeground(new Color(0x000000));
+                parent.getHeader().getTitle().setText("itsGAMES");
+                parent.getHeader().setGame(null);
+            }
+        }
     }
 }

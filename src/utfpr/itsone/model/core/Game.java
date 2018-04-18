@@ -3,6 +3,8 @@ package utfpr.itsone.model.core;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
+import java.io.File;
 import java.io.IOException;
 
 public class Game {
@@ -59,7 +61,7 @@ public class Game {
     }
 
     public void setBackground() {
-        this.background = setImage("background");
+        this.background = createResizedCopy(setImage("background"),1500,500,true);
     }
 
     public BufferedImage setImage(String path){
@@ -87,5 +89,34 @@ public class Game {
         g.drawImage(originalImage, 0, 0, scaledWidth, scaledHeight, null);
         g.dispose();
         return scaledBI;
+    }
+
+    public BufferedImage toFilter(BufferedImage image) {
+
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        for(int i=0; i<height; i++){
+
+            for(int j=0; j<width; j++){
+
+                Color c = new Color(image.getRGB(j, i));
+                int red = (int)(c.getRed() * 0.4);
+                int green = (int)(c.getGreen() * 0.4);
+                int blue = (int)(c.getBlue() * 0.4);
+                Color newColor = new Color(red,
+
+                        green,blue);
+
+                image.setRGB(j,i,newColor.getRGB());
+            }
+        }
+        File outputfile = new File(getId()+".jpg");
+        try {
+            ImageIO.write(image, "JPG", outputfile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
     }
 }

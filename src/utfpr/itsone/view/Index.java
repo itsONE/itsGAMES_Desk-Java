@@ -20,6 +20,7 @@ public class Index extends JFrame {
     public static final Dimension DIMENSIONS = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
     private Bar bar = new Bar();
     private TopBar topBar;
+    private Header header = new Header();
 
     public Index() throws HeadlessException {
         super(NAME);
@@ -48,8 +49,19 @@ public class Index extends JFrame {
         nav.add(topBar, BorderLayout.NORTH);
         JPanel body = new JPanel(new BorderLayout());
         nav.add(body,BorderLayout.CENTER);
-        body.add(new Header(),BorderLayout.NORTH);
-        body.add(new Content(this), BorderLayout.CENTER);
+        body.add(header,BorderLayout.NORTH);
+        JScrollPane sp1 = new JScrollPane(new Content(this),
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        sp1.setBorder(null);
+        sp1.getViewport().setOpaque(false);
+        sp1.setOpaque(false);
+        body.add(sp1, BorderLayout.CENTER);
+        this.revalidate();
+    }
+
+    public Header getHeader() {
+        return header;
     }
 
     public void update(){
