@@ -53,6 +53,17 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+      public String valida(User user){
+        String error = "";
+        for(User userName : UserData.getData().getUsers()){
+            if(userName.getUsername() == user.getUsername()){
+                error = "Usuario invalido\n";
+            }
+            if(userName.getEmail() == user.getEmail()){
+                error += "Email invalido";
+            }
+        }
+        return error;
+    }
    
 }
