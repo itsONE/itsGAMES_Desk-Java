@@ -1,8 +1,11 @@
 package utfpr.itsone.view.login;
 
+import utfpr.itsone.view.menu.TopBar;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -89,11 +92,11 @@ public class Sign extends JFrame{
         return null;
     }
 
-    public void openSignIn(){
-        add(new SignIn(),BorderLayout.CENTER);
+    public void openSignIn(TopBar topBar){
+        add(new SignIn(this,topBar),BorderLayout.CENTER);
     }
 
-    public void openSignUp(){
-        add(new SignUp(),BorderLayout.CENTER);
+    public void openSignUp(TopBar topBar){
+        add(new SignUp(this,topBar),BorderLayout.CENTER);
     }
 }

@@ -1,7 +1,9 @@
 package utfpr.itsone.view.body;
 
 import utfpr.itsone.data.GameData;
+import utfpr.itsone.data.UserData;
 import utfpr.itsone.model.core.Game;
+import utfpr.itsone.model.core.User;
 import utfpr.itsone.view.Index;
 
 import javax.swing.*;
@@ -23,22 +25,44 @@ public class Content extends JPanel implements MouseListener {
         setPreferredSize(new Dimension(0,700));
         setLayout(new FlowLayout());
         setBackground(new Color(0x000715));
-        for (Game game : GameData.getData().getGames()){
-            GameView gameView = new GameView(game);
-            gameViews.add(gameView);
-            add(gameView);
-            ImageIcon img = new ImageIcon(game.getCover());
-            Image img2 = img.getImage();
-            Image newimg = img2.getScaledInstance(100, 125, java.awt.Image.SCALE_SMOOTH);
-            ImageIcon newIcon = new ImageIcon(newimg);
-            gameView.setIcon(newIcon);
-            gameView.setPreferredSize(new Dimension(100, 125));
-            gameView.revalidate();
-            gameView.setOpaque(false);
-            gameView.repaint();
-            gameView.addMouseListener(this);
-        }
+    }
 
+    public void listAllGames(){
+        removeAll();
+        for (Game game : GameData.getData().getGames()){
+            createGameView(game);
+        }
+    }
+
+    public void listAllGamesUser(User user){
+        removeAll();
+        for (Game game : user.getGames()){
+            createGameView(game);
+        }
+    }
+
+    public void listGame(String name){
+        removeAll();
+        for (Game game : GameData.getData().getGames()){
+            if (game.getName().equals(name))
+                createGameView(game);
+        }
+    }
+
+    public void createGameView(Game game){
+        GameView gameView = new GameView(game);
+        gameViews.add(gameView);
+        add(gameView);
+        ImageIcon img = new ImageIcon(game.getCover());
+        Image img2 = img.getImage();
+        Image newimg = img2.getScaledInstance(100, 125, java.awt.Image.SCALE_SMOOTH);
+        ImageIcon newIcon = new ImageIcon(newimg);
+        gameView.setIcon(newIcon);
+        gameView.setPreferredSize(new Dimension(100, 125));
+        gameView.revalidate();
+        gameView.setOpaque(false);
+        gameView.repaint();
+        gameView.addMouseListener(this);
     }
 
     public void active(){

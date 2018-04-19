@@ -27,5 +27,14 @@ public class UserData {
     public ArrayList<User> getUsers() {
         return users;
     }
+
+    public User search(long id){
+        for(User userName : UserData.getData().getUsers()){
+            if(userName.getId() == id){
+                return userName;
+            }
+        }
+        return null;
+    }
   
 }

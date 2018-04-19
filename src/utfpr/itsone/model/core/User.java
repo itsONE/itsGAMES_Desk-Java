@@ -1,11 +1,17 @@
 package utfpr.itsone.model.core;
 
+import utfpr.itsone.data.UserData;
+
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class User {
     private static Long cont = 0l;
     private long id;
     private String username;
     private String email;
     private String password;
+    private ArrayList<Game> games = new ArrayList<>();
     
     public User (String username, String email, String password){
         id = cont ++;
@@ -53,17 +59,15 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-      public String valida(User user){
-        String error = "";
-        for(User userName : UserData.getData().getUsers()){
-            if(userName.getUsername() == user.getUsername()){
-                error = "Usuario invalido\n";
-            }
-            if(userName.getEmail() == user.getEmail()){
-                error += "Email invalido";
-            }
-        }
-        return error;
+
+    public ArrayList<Game> getGames() {
+        return games;
     }
-   
+
+    public void setGames(Game game) {
+        if (!Objects.isNull(game)){
+            if (!games.contains(game))
+                games.add(game);
+        }
+    }
 }

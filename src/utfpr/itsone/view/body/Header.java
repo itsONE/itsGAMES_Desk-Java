@@ -39,6 +39,10 @@ public class Header extends JPanel {
         this.game = game;
     }
 
+    public Game getGame() {
+        return game;
+    }
+
     public void setDescription(String text) {
         description.setText("<html><p>"+text+"</p></html>");
     }

@@ -18,14 +18,14 @@ public class Index extends JFrame {
     public static final int SCALE = 7;
     public static final String NAME = "itsGAMES";
     public static final Dimension DIMENSIONS = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
-    private Bar bar = new Bar();
-    private TopBar topBar;
+    private Content content = new Content(this);
     private Header header = new Header();
+    private Bar bar = new Bar(header,content);
+    private TopBar topBar;
 
     public Index() throws HeadlessException {
         super(NAME);
         new CreateObj();
-        Game game = GameData.getData().getGames().get(0);
         setUndecorated(true);
         setPreferredSize(DIMENSIONS);
         setMinimumSize(new Dimension(WIDTH*3,HEIGHT*5));
@@ -35,8 +35,9 @@ public class Index extends JFrame {
         revalidate();
         setLayout(new BorderLayout());
         pack();
-        topBar = new TopBar(this);
+        topBar = new TopBar(this,content);
         init();
+        content.listAllGames();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -50,7 +51,7 @@ public class Index extends JFrame {
         JPanel body = new JPanel(new BorderLayout());
         nav.add(body,BorderLayout.CENTER);
         body.add(header,BorderLayout.NORTH);
-        JScrollPane sp1 = new JScrollPane(new Content(this),
+        JScrollPane sp1 = new JScrollPane(content,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         sp1.setBorder(null);
@@ -62,6 +63,10 @@ public class Index extends JFrame {
 
     public Header getHeader() {
         return header;
+    }
+
+    public TopBar getTopBar() {
+        return topBar;
     }
 
     public void update(){
