@@ -10,12 +10,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class SignUp extends SignIn{
     private JLabel emailLabel = new JLabel("Email");
     private JTextField emailField = new JTextField();
+    protected JLabel passwordLabel2 = new JLabel("Confirm Password");
+    protected JPasswordField passwordField2 = new JPasswordField();
 
     public SignUp(JFrame parent, TopBar topBar) {
         super(parent, topBar);
@@ -25,6 +30,16 @@ public class SignUp extends SignIn{
     }
 
     public void register() {
+        passwordField2.setBorder(BorderFactory.createMatteBorder(
+                0, 0, 1, 0, new Color(0xcccccc)));
+        passwordField2.setMaximumSize(new Dimension(300,userField.getPreferredSize().height+5));
+        passwordField2.setBackground(new Color(0x000a1f));
+        passwordField2.setForeground(new Color(0xcccccc));
+        passwordField2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        passwordLabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        passwordLabel2.setForeground(new Color(0x333436));
+
+
         emailField.setBorder(BorderFactory.createMatteBorder(
                 0, 0, 1, 0, new Color(0xcccccc)));
         emailField.setMaximumSize(new Dimension(300,emailField.getPreferredSize().height+5));
@@ -60,8 +75,21 @@ public class SignUp extends SignIn{
                 passwordLabel.setForeground(new Color(0x333436));
             }
         });
+        passwordField2.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent arg0) {
+                passwordLabel2.setForeground(new Color(0x285888));
+            }
+
+            public void focusLost(FocusEvent arg0) {
+                passwordLabel2.setForeground(new Color(0x333436));
+            }
+        });
         remove(0);
         add(Box.createRigidArea(new Dimension(0, 100)),0);
+        add(Box.createRigidArea(new Dimension(0, 20)));
+        add(passwordLabel2);
+        add(Box.createRigidArea(new Dimension(0, 2)));
+        add(passwordField2);
         add(Box.createRigidArea(new Dimension(0, 20)));
         add(emailLabel);
         add(Box.createRigidArea(new Dimension(0, 2)));
@@ -79,22 +107,31 @@ public class SignUp extends SignIn{
         add(submitRegister);
     }
 
+    public String valData(String user,String password, String password2, String email){
+        String error = "";
+        if (user.isEmpty())
+            error += "Nome de usuário é obrigatório\n";
+        if (password.isEmpty())
+            error += "Senha de usuário é obrigatório\n";
+        if (email.isEmpty())
+            error += "Email de usuário é obrigatório\n";
+        if(validaUserName(user))
+            error += "Nome de usuário inválido\n";
+        if(validaEmail(email))
+            error += "Email de usuário inválido\n";
+        if(!password.equals(password2))
+            error += "Senhas não são iguais\n";
+        if(password.length()<5)
+            error += "Senha deve ter 5 ou mais caracteres\n";
+        return error;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        String error = "";
-        if (userField.getText().isEmpty())
-            error += "Nome de usuário é obrigatório\n";
-        if (passwordField.getText().isEmpty())
-            error += "Senha de usuário é obrigatório\n";
-        if (emailField.getText().isEmpty())
-            error += "Email de usuário é obrigatório\n";
-        if(validaUserName(userField.getText()))
-            error += "Nome de usuário inválido\n";
-        if(validaEmail(emailField.getText()))
-            error += "Email de usuário inválido\n";
-
+        String error = valData(userField.getText(),passwordField.getText(),passwordField2.getText(),emailField.getText());
         if(error.isEmpty()) {
-            UserData.getData().addUser(new User(userField.getText(), emailField.getText(), passwordField.getText()));
+            UserData.getData().addUser(new User(userField.getText(), emailField.getText(), encrpPass(passwordField.getText())));
+            User user = UserData.getData().getUsers().get(1);
             parent.dispose();
         }
         else

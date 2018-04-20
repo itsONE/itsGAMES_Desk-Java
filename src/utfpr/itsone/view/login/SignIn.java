@@ -10,9 +10,13 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -93,18 +97,26 @@ public class SignIn extends JPanel implements ActionListener {
         return false;
     }
 
+    public boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return !m.matches();
+    }
+
     public boolean validaEmail(String email){
         for(User userName : UserData.getData().getUsers()){
             if(userName.getEmail().equals(email)){
                 return true;
             }
         }
-        return false;
+        return isValidEmailAddress(email);
     }
 
     public boolean validaSenha(String senha){
+        String senhaEnc = encrpPass(senha);
         for(User userName : UserData.getData().getUsers()){
-            if(userName.getPassword().equals(senha)){
+            if(userName.getPassword().equals(senhaEnc)){
                 return true;
             }
         }
@@ -113,11 +125,21 @@ public class SignIn extends JPanel implements ActionListener {
 
     public long acess(){
         for(User userName : UserData.getData().getUsers()){
-            if(userField.getText().equals(userName.getUsername()) && passwordField.getText().equals(userName.getPassword())){
+            if(userField.getText().equals(userName.getUsername()) && encrpPass(passwordField.getText()).equals(userName.getPassword())){
                 return userName.getId();
             }
         }
         return -1;
+    }
+
+    public String encrpPass(String password){
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return (new HexBinaryAdapter()).marshal(md5.digest(password.getBytes()));
     }
 
     @Override

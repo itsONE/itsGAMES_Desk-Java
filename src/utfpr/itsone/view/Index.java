@@ -71,5 +71,8 @@ public class Index extends JFrame {
 
     public void update(){
         topBar.getSeperatorCenter().setMaximumSize(new Dimension(getWidth()-620, 0));
+        if (getWidth()<993){
+            header.setSizeFont(getWidth());
+        }
     }
 }
