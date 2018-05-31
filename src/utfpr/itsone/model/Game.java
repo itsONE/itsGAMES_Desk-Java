@@ -3,32 +3,21 @@ package utfpr.itsone.model;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 
 public class Game {
-    private static Long cont = 0l;
-    private long id;
+    private int id;
     private String name;
-    private String plataform;
     private String description;
     private BufferedImage cover;
     private BufferedImage background;
 
-    public Game(String name, String description) {
-        id = cont++;
-        this.name = name;
-        this.description = description;
-        setCover();
-        setBackground();
-    }
-
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

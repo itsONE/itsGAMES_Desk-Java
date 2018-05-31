@@ -4,33 +4,17 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class User {
-    private static Long cont = 0l;
-    private long id;
+    private int id;
     private String username;
     private String email;
     private String password;
     private ArrayList<Game> games = new ArrayList<>();
-    
-    public User (String username, String email, String password){
-        id = cont ++;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
 
-    public static Long getCont() {
-        return cont;
-    }
-
-    public static void setCont(Long cont) {
-        User.cont = cont;
-    }
-
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

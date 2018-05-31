@@ -126,8 +126,8 @@ public class SignUp extends SignIn{
     public void actionPerformed(ActionEvent e) {
         String error = valData(userField.getText(),passwordField.getText(),passwordField2.getText(),emailField.getText());
         if(error.isEmpty()) {
-            UserData.getData().addUser(new User(userField.getText(), emailField.getText(), encrpPass(passwordField.getText())));
-            User user = UserData.getData().getUsers().get(1);
+            /*UserData.getData().addUser(new User(userField.getText(), emailField.getText(), encrpPass(passwordField.getText())));
+            User user = UserData.getData().getUsers().get(1);*/
             parent.dispose();
         }
         else
