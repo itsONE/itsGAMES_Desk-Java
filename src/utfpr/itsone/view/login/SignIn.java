@@ -1,8 +1,8 @@
 package utfpr.itsone.view.login;
 
 import utfpr.itsone.controller.Session;
-import utfpr.itsone.data.UserData;
-import utfpr.itsone.model.core.User;
+import utfpr.itsone.model.dao.UserData;
+import utfpr.itsone.model.User;
 import utfpr.itsone.view.menu.TopBar;
 
 import javax.swing.*;
@@ -14,7 +14,6 @@ import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 

@@ -1,11 +1,10 @@
-package utfpr.itsone.controller;
+/*package utfpr.itsone.controller;
 
-import utfpr.itsone.data.GameData;
-import utfpr.itsone.data.UserData;
-import utfpr.itsone.model.core.Game;
-import utfpr.itsone.model.core.User;
+import utfpr.itsone.model.dao.GameData;
+import utfpr.itsone.model.dao.UserData;
+import utfpr.itsone.model.Game;
+import utfpr.itsone.model.User;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,4 +45,4 @@ public class CreateObj {
 
         UserData.getData().addUser(new User("admin","admin@utfpr.com","21232F297A57A5A743894A0E4A801FC3"));
     }
-}
+}*/

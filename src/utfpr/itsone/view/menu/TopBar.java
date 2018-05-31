@@ -1,9 +1,8 @@
 package utfpr.itsone.view.menu;
 
 import utfpr.itsone.controller.Session;
-import utfpr.itsone.data.GameData;
-import utfpr.itsone.data.UserData;
-import utfpr.itsone.model.core.User;
+import utfpr.itsone.model.dao.UserData;
+import utfpr.itsone.model.User;
 import utfpr.itsone.view.body.Content;
 import utfpr.itsone.view.login.Sign;
 

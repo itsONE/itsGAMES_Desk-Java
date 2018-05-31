@@ -1,8 +1,9 @@
-package utfpr.itsone.data;
+package utfpr.itsone.model.dao;
+
+import utfpr.itsone.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import utfpr.itsone.model.core.User;
 
 
 public class UserData {

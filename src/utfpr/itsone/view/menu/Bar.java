@@ -1,16 +1,14 @@
 package utfpr.itsone.view.menu;
 
 import utfpr.itsone.controller.Session;
-import utfpr.itsone.data.UserData;
+import utfpr.itsone.model.dao.UserData;
 import utfpr.itsone.view.body.Content;
 import utfpr.itsone.view.body.Header;
-import utfpr.itsone.view.login.Sign;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;

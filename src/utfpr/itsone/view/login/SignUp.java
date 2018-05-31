@@ -1,18 +1,14 @@
 package utfpr.itsone.view.login;
 
-import utfpr.itsone.data.UserData;
-import utfpr.itsone.model.core.User;
+import utfpr.itsone.model.dao.UserData;
+import utfpr.itsone.model.User;
 import utfpr.itsone.view.menu.TopBar;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 

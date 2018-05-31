@@ -1,8 +1,5 @@
 package utfpr.itsone.view;
 
-import utfpr.itsone.controller.CreateObj;
-import utfpr.itsone.data.GameData;
-import utfpr.itsone.model.core.Game;
 import utfpr.itsone.view.body.Content;
 import utfpr.itsone.view.body.Header;
 import utfpr.itsone.view.menu.Bar;
@@ -25,7 +22,6 @@ public class Index extends JFrame {
 
     public Index() throws HeadlessException {
         super(NAME);
-        new CreateObj();
         setUndecorated(true);
         setPreferredSize(DIMENSIONS);
         setMinimumSize(new Dimension(WIDTH*3,HEIGHT*5));

@@ -1,4 +1,4 @@
-package utfpr.itsone.model.core;
+package utfpr.itsone.model;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

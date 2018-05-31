@@ -1,15 +1,12 @@
 package utfpr.itsone.view.body;
 
-import utfpr.itsone.data.GameData;
-import utfpr.itsone.data.UserData;
-import utfpr.itsone.model.core.Game;
-import utfpr.itsone.model.core.User;
+import utfpr.itsone.model.dao.GameData;
+import utfpr.itsone.model.Game;
+import utfpr.itsone.model.User;
 import utfpr.itsone.view.Index;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -29,9 +26,9 @@ public class Content extends JPanel implements MouseListener {
 
     public void listAllGames(){
         removeAll();
-        for (Game game : GameData.getData().getGames()){
+       /* for (Game game : GameData.getData().getGames()){
             createGameView(game);
-        }
+        }*/
     }
 
     public void listAllGamesUser(User user){
@@ -43,10 +40,10 @@ public class Content extends JPanel implements MouseListener {
 
     public void listGame(String name){
         removeAll();
-        for (Game game : GameData.getData().getGames()){
+        /*for (Game game : GameData.getData().getGames()){
             if (game.getName().equals(name))
                 createGameView(game);
-        }
+        }*/
     }
 
     public void createGameView(Game game){

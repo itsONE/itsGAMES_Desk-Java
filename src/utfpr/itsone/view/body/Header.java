@@ -1,13 +1,10 @@
 package utfpr.itsone.view.body;
 
-import utfpr.itsone.model.core.Game;
-import utfpr.itsone.view.Index;
+import utfpr.itsone.model.Game;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;

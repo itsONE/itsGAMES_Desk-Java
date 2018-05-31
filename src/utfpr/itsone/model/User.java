@@ -1,6 +1,4 @@
-package utfpr.itsone.model.core;
-
-import utfpr.itsone.data.UserData;
+package utfpr.itsone.model;
 
 import java.util.ArrayList;
 import java.util.Objects;

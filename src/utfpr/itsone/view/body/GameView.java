@@ -1,6 +1,6 @@
 package utfpr.itsone.view.body;
 
-import utfpr.itsone.model.core.Game;
+import utfpr.itsone.model.Game;
 
 import javax.swing.*;
 
