@@ -75,7 +75,7 @@ public class Bar extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent arg0) {
-        if (arg0.getSource().equals(menu)) {
+        /*if (arg0.getSource().equals(menu)) {
             content.listAllGames();
         } else if (arg0.getSource().equals(plus)) {
             if (Session.getSession().getId() < 0)
@@ -87,7 +87,7 @@ public class Bar extends JPanel implements MouseListener {
                 showMessageDialog(null, "Faça o login para ver favoritos");
             else
                 content.listAllGamesUser(UserData.getData().search(Session.getSession().getId()));
-        }
+        }*/
     }
 
     @Override

@@ -1,5 +1,6 @@
 package utfpr.itsone.view.login;
 
+import utfpr.itsone.controller.UserController;
 import utfpr.itsone.model.dao.UserData;
 import utfpr.itsone.model.User;
 import utfpr.itsone.view.menu.TopBar;
@@ -18,8 +19,8 @@ public class SignUp extends SignIn{
     protected JLabel passwordLabel2 = new JLabel("Confirm Password");
     protected JPasswordField passwordField2 = new JPasswordField();
 
-    public SignUp(JFrame parent, TopBar topBar) {
-        super(parent, topBar);
+    public SignUp(JFrame parent, UserController controller) {
+        super(parent, controller);
         remove(9);
         remove(8);
         register();
@@ -33,7 +34,7 @@ public class SignUp extends SignIn{
         passwordField2.setForeground(new Color(0xcccccc));
         passwordField2.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordLabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
-        passwordLabel2.setForeground(new Color(0x333436));
+        passwordLabel2.setForeground(new Color(0x8D8D8D));
 
 
         emailField.setBorder(BorderFactory.createMatteBorder(
@@ -43,14 +44,14 @@ public class SignUp extends SignIn{
         emailField.setForeground(new Color(0xcccccc));
         emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         emailField.setAlignmentX(Component.CENTER_ALIGNMENT);
-        emailLabel.setForeground(new Color(0x333436));
+        emailLabel.setForeground(new Color(0x8D8D8D));
         emailField.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent arg0) {
                 emailLabel.setForeground(new Color(0x285888));
             }
 
             public void focusLost(FocusEvent arg0) {
-                emailLabel.setForeground(new Color(0x333436));
+                emailLabel.setForeground(new Color(0x8D8D8D));
             }
         });
         userField.addFocusListener(new FocusListener() {
@@ -59,7 +60,7 @@ public class SignUp extends SignIn{
             }
 
             public void focusLost(FocusEvent arg0) {
-                userLabel.setForeground(new Color(0x333436));
+                userLabel.setForeground(new Color(0x8D8D8D));
             }
         });
         passwordField.addFocusListener(new FocusListener() {
@@ -68,7 +69,7 @@ public class SignUp extends SignIn{
             }
 
             public void focusLost(FocusEvent arg0) {
-                passwordLabel.setForeground(new Color(0x333436));
+                passwordLabel.setForeground(new Color(0x8D8D8D));
             }
         });
         passwordField2.addFocusListener(new FocusListener() {
@@ -77,7 +78,7 @@ public class SignUp extends SignIn{
             }
 
             public void focusLost(FocusEvent arg0) {
-                passwordLabel2.setForeground(new Color(0x333436));
+                passwordLabel2.setForeground(new Color(0x8D8D8D));
             }
         });
         remove(0);
@@ -103,31 +104,19 @@ public class SignUp extends SignIn{
         add(submitRegister);
     }
 
-    public String valData(String user,String password, String password2, String email){
-        String error = "";
-        if (user.isEmpty())
-            error += "Nome de usuário é obrigatório\n";
-        if (password.isEmpty())
-            error += "Senha de usuário é obrigatório\n";
-        if (email.isEmpty())
-            error += "Email de usuário é obrigatório\n";
-        if(validaUserName(user))
-            error += "Nome de usuário inválido\n";
-        if(validaEmail(email))
-            error += "Email de usuário inválido\n";
-        if(!password.equals(password2))
-            error += "Senhas não são iguais\n";
-        if(password.length()<5)
-            error += "Senha deve ter 5 ou mais caracteres\n";
-        return error;
+    public JTextField getEmailField() {
+        return emailField;
+    }
+
+    public JPasswordField getPasswordField2() {
+        return passwordField2;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String error = valData(userField.getText(),passwordField.getText(),passwordField2.getText(),emailField.getText());
-        if(error.isEmpty()) {
-            /*UserData.getData().addUser(new User(userField.getText(), emailField.getText(), encrpPass(passwordField.getText())));
-            User user = UserData.getData().getUsers().get(1);*/
+        String error = controller.isValidRegister();
+        if (error.isEmpty()) {
+            controller.addUser();
             parent.dispose();
         }
         else

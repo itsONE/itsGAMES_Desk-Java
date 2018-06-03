@@ -1,5 +1,7 @@
 package utfpr.itsone.view.login;
 
+import utfpr.itsone.controller.GameController;
+import utfpr.itsone.controller.UserController;
 import utfpr.itsone.view.menu.TopBar;
 
 import javax.imageio.ImageIO;
@@ -16,11 +18,20 @@ public class Sign extends JFrame{
     public static final String NAME = "Sign In - itsGAMES";
     public static final Dimension DIMENSIONS = new Dimension(500, 500);
     private Point initialClick;
-    private JFrame parent = this;
+    private final JFrame parent = this;
     private JSeparator seperatorCenter;
+    private final SignUp signUp;
+    private final SignIn signIn;
+    private final TopBar topBar;
+    private final UserController controller;
 
-    public Sign() throws HeadlessException {
+
+    public Sign(TopBar topBar) throws HeadlessException {
         super(NAME);
+        this.controller = new UserController(this);
+        this.topBar = topBar;
+        this.signIn = new SignIn(this, controller);
+        this.signUp = new SignUp(this, controller);
         setUndecorated(true);
         setPreferredSize(DIMENSIONS);
         revalidate();
@@ -92,11 +103,23 @@ public class Sign extends JFrame{
         return null;
     }
 
-    public void openSignIn(TopBar topBar){
-        add(new SignIn(this,topBar),BorderLayout.CENTER);
+    public SignUp getSignUp() {
+        return signUp;
     }
 
-    public void openSignUp(TopBar topBar){
-        add(new SignUp(this,topBar),BorderLayout.CENTER);
+    public SignIn getSignIn() {
+        return signIn;
+    }
+
+    public TopBar getTopBar() {
+        return topBar;
+    }
+
+    public void openSignIn(){
+        add(signIn,BorderLayout.CENTER);
+    }
+
+    public void openSignUp(){
+        add(signUp,BorderLayout.CENTER);
     }
 }

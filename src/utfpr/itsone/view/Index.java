@@ -1,5 +1,6 @@
 package utfpr.itsone.view;
 
+import utfpr.itsone.controller.GameController;
 import utfpr.itsone.view.body.Content;
 import utfpr.itsone.view.body.Header;
 import utfpr.itsone.view.menu.Bar;
@@ -15,13 +16,19 @@ public class Index extends JFrame {
     public static final int SCALE = 7;
     public static final String NAME = "itsGAMES";
     public static final Dimension DIMENSIONS = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
-    private Content content = new Content(this);
-    private Header header = new Header();
-    private Bar bar = new Bar(header,content);
-    private TopBar topBar;
+    private final Content content;
+    private final Header header;
+    private final Bar bar;
+    private final TopBar topBar;
+    private final GameController controller;
 
     public Index() throws HeadlessException {
         super(NAME);
+        controller = new GameController(this);
+        content = new Content(controller);
+        header = new Header();
+        bar = new Bar(header,content);
+        controller.setList();
         setUndecorated(true);
         setPreferredSize(DIMENSIONS);
         setMinimumSize(new Dimension(WIDTH*3,HEIGHT*5));
@@ -31,15 +38,15 @@ public class Index extends JFrame {
         revalidate();
         setLayout(new BorderLayout());
         pack();
-        topBar = new TopBar(this,content);
-        init();
-        content.listAllGames();
+        topBar = new TopBar(this,content,controller);
+        initComponents();
+        update();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    public void init() {
+    public void initComponents() {
         add(bar, BorderLayout.WEST);
         JPanel nav = new JPanel(new BorderLayout());
         add(nav, BorderLayout.CENTER);
@@ -61,14 +68,27 @@ public class Index extends JFrame {
         return header;
     }
 
+    public Content getContent() {
+        return content;
+    }
+
+    public Bar getBar() {
+        return bar;
+    }
+
     public TopBar getTopBar() {
         return topBar;
     }
 
-    public void update(){
-        topBar.getSeperatorCenter().setMaximumSize(new Dimension(getWidth()-620, 0));
-        if (getWidth()<993){
+    public GameController getController() {
+        return controller;
+    }
+
+    public void update() {
+        topBar.getSeperatorCenter().setMaximumSize(new Dimension(getWidth() - 620, 0));
+        if (getWidth() < 993) {
             header.setSizeFont(getWidth());
         }
+        content.getGameList().setDimension(new Dimension(getWidth()-100,getHeight()));
     }
 }

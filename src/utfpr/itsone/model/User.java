@@ -8,7 +8,6 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private ArrayList<Game> games = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -42,14 +41,4 @@ public class User {
         this.password = password;
     }
 
-    public ArrayList<Game> getGames() {
-        return games;
-    }
-
-    public void setGames(Game game) {
-        if (!Objects.isNull(game)){
-            if (!games.contains(game))
-                games.add(game);
-        }
-    }
 }

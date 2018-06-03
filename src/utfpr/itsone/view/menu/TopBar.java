@@ -1,5 +1,6 @@
 package utfpr.itsone.view.menu;
 
+import utfpr.itsone.controller.GameController;
 import utfpr.itsone.controller.Session;
 import utfpr.itsone.model.dao.UserData;
 import utfpr.itsone.model.User;
@@ -30,10 +31,12 @@ public class TopBar extends JPanel {
     private JFrame parent;
     private TopBar topBar = this;
     private JSeparator seperatorCenter;
+    private final GameController controller;
 
-    public TopBar(final JFrame parent, Content content) {
+    public TopBar(final JFrame parent, Content content, GameController controller) {
         this.parent = parent;
         this.content = content;
+        this.controller = controller;
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         config();
         initComponents();
@@ -95,15 +98,14 @@ public class TopBar extends JPanel {
         searchField.setMaximumSize(new Dimension(300, searchField.getPreferredSize().height + 5));
         searchField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                content.listGame(searchField.getText().toUpperCase());
+                controller.getData();
             }
         });
         add(searchField);
     }
 
-    public void addUser() {
+    public void addUser(User user) {
         if (Session.getSession().getId() > -1) {
-            User user = UserData.getData().search(Session.getSession().getId());
             remove(3);
             remove(4);
             seperatorCenter.setMaximumSize(new Dimension(parent.getWidth() - 500, 0));
@@ -129,13 +131,13 @@ public class TopBar extends JPanel {
         sign.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Sign().openSignIn(topBar);
+                new Sign(topBar).openSignIn();
             }
         });
         register.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Sign().openSignUp(topBar);
+                new Sign(topBar).openSignUp();
             }
         });
     }
@@ -198,5 +200,9 @@ public class TopBar extends JPanel {
 
     public JSeparator getSeperatorCenter() {
         return seperatorCenter;
+    }
+
+    public JTextField getSearchField() {
+        return searchField;
     }
 }

@@ -1,114 +1,32 @@
 package utfpr.itsone.view.body;
 
-import utfpr.itsone.model.dao.GameData;
+import utfpr.itsone.controller.GameController;
 import utfpr.itsone.model.Game;
-import utfpr.itsone.model.User;
-import utfpr.itsone.view.Index;
+
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
+import java.util.List;
 
-public class Content extends JPanel implements MouseListener {
-    private ArrayList<GameView> gameViews = new ArrayList<>();
-    private Index parent;
-    private boolean clicked = false;
+public class Content extends JPanel{
+    private GameList gameList;
 
-    public Content(Index parent){
+    public Content(GameController controller){
         super();
-        this.parent = parent;
-        setPreferredSize(new Dimension(0,700));
-        setLayout(new FlowLayout());
+        //setLayout(new BorderLayout());
         setBackground(new Color(0x000715));
+        setPreferredSize(new Dimension(0,1000));
+        gameList = new GameList(controller);
+        add(gameList);
     }
 
-    public void listAllGames(){
-        removeAll();
-       /* for (Game game : GameData.getData().getGames()){
-            createGameView(game);
-        }*/
+    public void listAllGames(List<Game> games){
+        gameList.removeAll();
+        for (Game game : games)
+            this.gameList.createGameView(game);
     }
 
-    public void listAllGamesUser(User user){
-        removeAll();
-        for (Game game : user.getGames()){
-            createGameView(game);
-        }
-    }
-
-    public void listGame(String name){
-        removeAll();
-        /*for (Game game : GameData.getData().getGames()){
-            if (game.getName().equals(name))
-                createGameView(game);
-        }*/
-    }
-
-    public void createGameView(Game game){
-        GameView gameView = new GameView(game);
-        gameViews.add(gameView);
-        add(gameView);
-        ImageIcon img = new ImageIcon(game.getCover());
-        Image img2 = img.getImage();
-        Image newimg = img2.getScaledInstance(100, 125, java.awt.Image.SCALE_SMOOTH);
-        ImageIcon newIcon = new ImageIcon(newimg);
-        gameView.setIcon(newIcon);
-        gameView.setPreferredSize(new Dimension(100, 125));
-        gameView.revalidate();
-        gameView.setOpaque(false);
-        gameView.repaint();
-        gameView.addMouseListener(this);
-    }
-
-    public void active(){
-
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent arg0) {
-        if (arg0.getSource() instanceof GameView) {
-            Game game = ((GameView) arg0.getSource()).getGame();
-            clicked = true;
-            parent.getHeader().getTitle().setForeground(new Color(0xffffff));
-            parent.getHeader().getTitle().setText(game.getName());
-            parent.getHeader().setDescription(game.getDescription());
-            parent.getHeader().create();
-            parent.getHeader().setGame(game);
-        }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent arg0) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent arg0) {
-        if (arg0.getSource() instanceof GameView) {
-            if (!clicked) {
-                Game game = ((GameView) arg0.getSource()).getGame();
-                parent.getHeader().getTitle().setForeground(new Color(0xffffff));
-                parent.getHeader().getTitle().setText(game.getName());
-                parent.getHeader().setGame(game);
-            }
-        }
-    }
-
-    @Override
-    public void mouseExited(MouseEvent arg0) {
-        if (arg0.getSource() instanceof GameView) {
-            if (!clicked) {
-                parent.getHeader().getTitle().setForeground(new Color(0x000000));
-                parent.getHeader().getTitle().setText("itsGAMES");
-                parent.getHeader().setGame(null);
-            }
-        }
+    public GameList getGameList() {
+        return gameList;
     }
 }

@@ -1,6 +1,8 @@
 package utfpr.itsone.view.login;
 
+import utfpr.itsone.config.hash.BCrypt;
 import utfpr.itsone.controller.Session;
+import utfpr.itsone.controller.UserController;
 import utfpr.itsone.model.dao.UserData;
 import utfpr.itsone.model.User;
 import utfpr.itsone.view.menu.TopBar;
@@ -21,15 +23,16 @@ import static javax.swing.JOptionPane.showMessageDialog;
 
 public class SignIn extends JPanel implements ActionListener {
     protected JFrame parent;
-    protected TopBar topBar;
     protected JLabel userLabel = new JLabel("Username");
     protected JTextField userField = new JTextField();
     protected JLabel passwordLabel = new JLabel("Password");
     protected JPasswordField passwordField = new JPasswordField();
+    protected final UserController controller;
 
-    public SignIn(JFrame parent, TopBar topBar){
+
+    public SignIn(JFrame parent, UserController controller){
         this.parent = parent;
-        this.topBar = topBar;
+        this.controller = controller;
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         setBackground(new Color(0x000a1f));
         createFields();
@@ -61,8 +64,8 @@ public class SignIn extends JPanel implements ActionListener {
         userField.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        userLabel.setForeground(new Color(0x333436));
-        passwordLabel.setForeground(new Color(0x333436));
+        userLabel.setForeground(new Color(0x8D8D8D));
+        passwordLabel.setForeground(new Color(0x8D8D8D));
         add(Box.createRigidArea(new Dimension(0, 150)));
         add(userLabel);
         add(Box.createRigidArea(new Dimension(0, 2)));
@@ -87,68 +90,17 @@ public class SignIn extends JPanel implements ActionListener {
         return submit;
     }
 
-    public boolean validaUserName(String user){
-        for(User userName : UserData.getData().getUsers()){
-            if(userName.getUsername().equals(user)){
-                return true;
-            }
-        }
-        return false;
+    public JTextField getUserField() {
+        return userField;
     }
 
-    public boolean isValidEmailAddress(String email) {
-        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
-        java.util.regex.Matcher m = p.matcher(email);
-        return !m.matches();
-    }
-
-    public boolean validaEmail(String email){
-        for(User userName : UserData.getData().getUsers()){
-            if(userName.getEmail().equals(email)){
-                return true;
-            }
-        }
-        return isValidEmailAddress(email);
-    }
-
-    public boolean validaSenha(String senha){
-        String senhaEnc = encrpPass(senha);
-        for(User userName : UserData.getData().getUsers()){
-            if(userName.getPassword().equals(senhaEnc)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public long acess(){
-        for(User userName : UserData.getData().getUsers()){
-            if(userField.getText().equals(userName.getUsername()) && encrpPass(passwordField.getText()).equals(userName.getPassword())){
-                return userName.getId();
-            }
-        }
-        return -1;
-    }
-
-    public String encrpPass(String password){
-        MessageDigest md5 = null;
-        try {
-            md5 = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return (new HexBinaryAdapter()).marshal(md5.digest(password.getBytes()));
+    public JPasswordField getPasswordField() {
+        return passwordField;
     }
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        if (validaUserName(userField.getText()) && validaSenha(passwordField.getText())){
-            Session.getSession().setId(acess());
-            topBar.addUser();
-            parent.dispose();
-        } else {
+        if (!controller.userAcess())
             showMessageDialog(null, "Usuário e/ou senha inválidos");
-        }
     }
 }

@@ -3,7 +3,7 @@ package utfpr.itsone.controller;
 import java.util.Date;
 
 public class Session {
-    private long id = -1;
+    private int id = -1;
     private Date dateCreated;
 
     public static Session getSession(){
@@ -14,11 +14,11 @@ public class Session {
         private static final Session INSTANCE = new Session();
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
         dateCreated = new Date();
     }
