@@ -27,7 +27,7 @@ public class Index extends JFrame {
         controller = new GameController(this);
         content = new Content(controller);
         header = new Header();
-        bar = new Bar(header,content);
+        bar = new Bar(this,header,content);
         controller.setList();
         setUndecorated(true);
         setPreferredSize(DIMENSIONS);
@@ -54,13 +54,7 @@ public class Index extends JFrame {
         JPanel body = new JPanel(new BorderLayout());
         nav.add(body,BorderLayout.CENTER);
         body.add(header,BorderLayout.NORTH);
-        JScrollPane sp1 = new JScrollPane(content,
-                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        sp1.setBorder(null);
-        sp1.getViewport().setOpaque(false);
-        sp1.setOpaque(false);
-        body.add(sp1, BorderLayout.CENTER);
+        body.add(content, BorderLayout.CENTER);
         this.revalidate();
     }
 

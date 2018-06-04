@@ -1,9 +1,6 @@
 package utfpr.itsone.view.login;
 
 import utfpr.itsone.controller.UserController;
-import utfpr.itsone.model.dao.UserData;
-import utfpr.itsone.model.User;
-import utfpr.itsone.view.menu.TopBar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +15,7 @@ public class SignUp extends SignIn{
     private JTextField emailField = new JTextField();
     protected JLabel passwordLabel2 = new JLabel("Confirm Password");
     protected JPasswordField passwordField2 = new JPasswordField();
+    private JButton submitRegister;
 
     public SignUp(JFrame parent, UserController controller) {
         super(parent, controller);
@@ -91,13 +89,7 @@ public class SignUp extends SignIn{
         add(emailLabel);
         add(Box.createRigidArea(new Dimension(0, 2)));
         add(emailField);
-        JButton submitRegister = styleButtons();
-        /*submitRegister.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Register");
-            }
-        });*/
+        submitRegister = styleButtons();
         submitRegister.addActionListener(this);
         submitRegister.setText("SIGN UP");
         add(Box.createRigidArea(new Dimension(0, 25)));
@@ -110,6 +102,18 @@ public class SignUp extends SignIn{
 
     public JPasswordField getPasswordField2() {
         return passwordField2;
+    }
+
+    public void setEmailField(JTextField emailField) {
+        this.emailField = emailField;
+    }
+
+    public void setPasswordField2(JPasswordField passwordField2) {
+        this.passwordField2 = passwordField2;
+    }
+
+    public JButton getSubmitRegister() {
+        return submitRegister;
     }
 
     @Override

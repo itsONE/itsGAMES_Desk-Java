@@ -98,6 +98,14 @@ public class SignIn extends JPanel implements ActionListener {
         return passwordField;
     }
 
+    public void setUserField(JTextField userField) {
+        this.userField = userField;
+    }
+
+    public void setPasswordField(JPasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
+
     @Override
     public void actionPerformed(ActionEvent arg0) {
         if (!controller.userAcess())

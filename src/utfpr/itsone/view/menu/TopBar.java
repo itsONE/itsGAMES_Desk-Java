@@ -2,10 +2,9 @@ package utfpr.itsone.view.menu;
 
 import utfpr.itsone.controller.GameController;
 import utfpr.itsone.controller.Session;
-import utfpr.itsone.model.dao.UserData;
 import utfpr.itsone.model.User;
 import utfpr.itsone.view.body.Content;
-import utfpr.itsone.view.login.Sign;
+import utfpr.itsone.view.page.ImplementPage;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -131,13 +130,13 @@ public class TopBar extends JPanel {
         sign.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Sign(topBar).openSignIn();
+                new ImplementPage(topBar).openSignIn();
             }
         });
         register.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Sign(topBar).openSignUp();
+                new ImplementPage(topBar).openSignUp();
             }
         });
     }

@@ -23,6 +23,13 @@ public class GameData implements ImplementGame {
     public static final String COLUMN_GAME_ID = "id";
     public static final String COLUMN_GAME_NAME = "name";
     public static final String COLUMN_GAME_DESCRIPTION = "description";
+    public static final String COLUMN_GAME_DATE = "date";
+    public static final String COLUMN_GAME_SITE = "site";
+    public static final String COLUMN_GAME_RATING = "rating";
+    public static final String COLUMN_GAME_DEVELOPER = "developer";
+    public static final String COLUMN_GAME_COVER = "cover";
+    public static final String COLUMN_GAME_BACKGROUND = "background";
+
 
     //Tabela jogos de usuarios
     public static final String TABLE_GAME_USER = "game_user";
@@ -59,6 +66,12 @@ public class GameData implements ImplementGame {
             + TABLE_GAME_VIEW + " WHERE " + COLUMN_GAME_NAME
             + " LIKE CONCAT('%', ? , '%')";
 
+    public static final String VIEW_ALL_GAME_SORT_NAME = VIEW_ALL_GAME
+            + " ORDER BY " + COLUMN_GAME_NAME + " DESC ";;
+
+    public static final String VIEW_ALL_GAME_SORT_DATE = VIEW_ALL_GAME
+            + " ORDER BY " + COLUMN_GAME_DATE + " DESC ";
+
     public GameData() {
         this.connection.execute(CREATE_GAME_VIEW);
         this.connection.execute(CREATE_GAME_USER_VIEW);
@@ -94,16 +107,44 @@ public class GameData implements ImplementGame {
     }
 
     @Override
-    public List<Game> getAllGame() {
+    public List<Game> getAllGameSortName() {
         list = new ArrayList<>();
-        ResultSet rs = this.connection.query(VIEW_ALL_GAME);
+        ResultSet rs = this.connection.query(VIEW_ALL_GAME_SORT_NAME);
+        if (getGames(rs)) return list;
+        return null;
+    }
+
+    public List<Game> getAllGameSortDate(){
+        list = new ArrayList<>();
+        ResultSet rs = this.connection.query(VIEW_ALL_GAME_SORT_DATE);
+        if (getGames(rs)) return list;
+        return null;
+    }
+
+    private boolean getGames(ResultSet rs) {
         try {
             while (rs.next())
                 list.add(addGame(rs));
-            return list;
+            return true;
         } catch (SQLException ex) {
             System.out.println("Erro ao retornar um jogo pelo nome: " + ex.getMessage());
         }
+        return false;
+    }
+
+    @Override
+    public List<Game> getAllGame() {
+        list = new ArrayList<>();
+        ResultSet rs = this.connection.query(VIEW_ALL_GAME);
+        if (getGames(rs)) return list;
+        return null;
+    }
+
+    @Override
+    public List<Game> getAllGameUser(int id) {
+        list = new ArrayList<>();
+        ResultSet rs = this.connection.query(VIEW_ALL_GAME_USER,id);
+        if (getGames(rs)) return list;
         return null;
     }
 
@@ -113,6 +154,11 @@ public class GameData implements ImplementGame {
             game.setId(rs.getInt(COLUMN_GAME_ID));
             game.setName(rs.getString(COLUMN_GAME_NAME));
             game.setDescription(rs.getString(COLUMN_GAME_DESCRIPTION));
+            game.setDate(rs.getDate(COLUMN_GAME_DATE));
+            game.setRating(rs.getString(COLUMN_GAME_RATING).charAt(0));
+            game.setDeveloper(rs.getString(COLUMN_GAME_DEVELOPER));
+            game.setCover(rs.getString(COLUMN_GAME_COVER));
+            game.setBackground(rs.getString(COLUMN_GAME_BACKGROUND));
         } catch (SQLException ex) {
             System.out.println("Erro ao ao acessar pelo nome: " + ex.getMessage());
         }

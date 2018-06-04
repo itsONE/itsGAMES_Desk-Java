@@ -24,6 +24,11 @@ public class GameController {
         panel.getContent().listAllGames(list);
     }
 
+    public void setListSortName() {
+        list = implementGame.getAllGameSortName();
+        panel.getContent().listAllGames(list);
+    }
+
     public void getData() {
         list = implementGame.getGame(panel.getTopBar().getSearchField().getText());
         panel.getContent().listAllGames(list);
@@ -41,4 +46,13 @@ public class GameController {
         panel.getHeader().setGame(null);
     }
 
+    public void setListSortDate() {
+        list = implementGame.getAllGameSortDate();
+        panel.getContent().listAllGames(list);
+    }
+
+    public void setListGameUser() {
+        list = implementGame.getAllGameUser(Session.getSession().getId());
+        panel.getContent().listAllGames(list);
+    }
 }

@@ -5,11 +5,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
+import java.util.Objects;
 
 public class Game {
     private int id;
     private String name;
     private String description;
+    private Date date;
+    private char rating;
+    private String site;
+    private String developer;
     private BufferedImage cover;
     private BufferedImage background;
 
@@ -41,24 +47,53 @@ public class Game {
         return cover;
     }
 
-    public void setCover() {
-        this.cover = setImage("cover");
-    }
-
     public BufferedImage getBackground() {
         return background;
     }
 
-    public void setBackground() {
-        this.background = createResizedCopy(setImage("background"),1500,500,true);
+    public Date getDate() {
+        return date;
     }
 
-    public BufferedImage setImage(String path){
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public char getRating() {
+        return rating;
+    }
+
+    public void setRating(char rating) {
+        this.rating = rating;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
+    }
+
+    public String getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(String developer) {
+        this.developer = developer;
+    }
+
+    public void setCover(String cover){
+        this.cover = setImage("cover", cover);
+    }
+
+    public void setBackground(String background) {
+        this.background = createResizedCopy(setImage("background", background),1500,500,true);
+    }
+
+    public BufferedImage setImage(String type, String path){
         try {
-            if ((getClass().getClassLoader().getResource("utfpr/itsone/resources/"+path+"/"+getId()+".jpg") != null))
-                return ImageIO.read(getClass().getClassLoader().getResource("utfpr/itsone/resources/"+path+"/"+getId()+".jpg"));
-            else
-                return ImageIO.read(getClass().getClassLoader().getResource("utfpr/itsone/resources/blank.jpg"));
+            return ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResource("utfpr/itsone/resources/" + type + "/" + path)));
         } catch (IOException e) {
             e.printStackTrace();
         }

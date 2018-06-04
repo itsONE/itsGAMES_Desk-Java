@@ -14,6 +14,12 @@ public interface ImplementGame {
 
     List<Game> getGame(String name);
 
+    List<Game> getAllGameSortName();
+
+    List<Game> getAllGameSortDate();
+
+    List<Game> getAllGameUser(int id);
+
     List<Game> getAllGame();
 
 }

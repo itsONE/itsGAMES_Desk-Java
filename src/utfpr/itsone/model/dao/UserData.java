@@ -38,6 +38,9 @@ public class UserData implements ImplementUser {
     public static final String CONSULT_ID = "SELECT * FROM "
             + TABLE_USER + " WHERE id=?";
 
+    public static final String UPDATE_USER = "UPDATE " + TABLE_USER
+            + " SET username=?, email=?, password=? WHERE id=?";
+
     @Override
     public void insert(User user) {
         this.connection.execute(INSERT_USER,
@@ -48,7 +51,11 @@ public class UserData implements ImplementUser {
 
     @Override
     public void update(User user) {
-
+        this.connection.execute(UPDATE_USER,
+                user.getUsername(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getId());
     }
 
     @Override
