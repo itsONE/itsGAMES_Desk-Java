@@ -9,4 +9,5 @@ public abstract class Configurations {
     public String BASE;
     public String DRIV;
     public String SSL;
+    public String TIMEZONE;
 }

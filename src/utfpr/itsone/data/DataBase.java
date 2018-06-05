@@ -13,6 +13,7 @@ public class DataBase {
     private String dbBase;
     private String dbDriv;
     private String dbSSl;
+    private String dbTimeZone;
 
     private String connString;
 
@@ -25,7 +26,7 @@ public class DataBase {
     }
 
     private String generateConnectionString(){
-        return "jdbc:" + this.dbType + "://" + this.dbHost + ":" + this.dbPort + "/" + this.dbBase + "?useUnicode=true&characterEncoding=utf-8";
+        return "jdbc:" + this.dbType + "://" + this.dbHost + ":" + this.dbPort + "/" + this.dbBase + "?useUnicode=true&characterEncoding=utf-8" + this.dbSSl + this.dbTimeZone;
     }
 
     public void connect(Configurations config){
@@ -37,6 +38,7 @@ public class DataBase {
         this.dbBase = config.BASE;
         this.dbDriv = config.DRIV;
         this.dbSSl = config.SSL;
+        this.dbTimeZone = config.TIMEZONE;
 
         this.connString = this.generateConnectionString();
 
