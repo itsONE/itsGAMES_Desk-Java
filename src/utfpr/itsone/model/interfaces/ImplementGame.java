@@ -6,13 +6,15 @@ import java.util.List;
 
 public interface ImplementGame {
 
-    void insert(Game game);
+    void insert(Game game, int id);
 
-    void update(Game game);
+    void update(Game game, int id, int grade);
 
-    void delete(int id);
+    void delete(Game game, int id);
 
     List<Game> getGame(String name);
+
+    boolean getGameUser(Game game, int id);
 
     List<Game> getAllGameSortName();
 

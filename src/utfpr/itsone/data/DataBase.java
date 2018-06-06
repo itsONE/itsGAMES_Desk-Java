@@ -3,6 +3,7 @@ package utfpr.itsone.data;
 import utfpr.itsone.config.Configurations;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DataBase {
     private String dbType;
@@ -21,30 +22,37 @@ public class DataBase {
     private Statement dbStatement;
     private PreparedStatement dbPreparedStm;
 
+    public Boolean connected;
+    public Configurations config;
+
+    public DataBase(){}
+
     public DataBase(Configurations config){
-        this.connect(config);
-    }
+        this.config = config;
+        this.connect();
+}
 
     private String generateConnectionString(){
         return "jdbc:" + this.dbType + "://" + this.dbHost + ":" + this.dbPort + "/" + this.dbBase + "?useUnicode=true&characterEncoding=utf-8" + this.dbSSl + this.dbTimeZone;
     }
 
-    public void connect(Configurations config){
-        this.dbType = config.TYPE;
-        this.dbHost = config.HOST;
-        this.dbUser = config.USER;
-        this.dbPass = config.PASS;
-        this.dbPort = config.PORT;
-        this.dbBase = config.BASE;
-        this.dbDriv = config.DRIV;
-        this.dbSSl = config.SSL;
-        this.dbTimeZone = config.TIMEZONE;
+    public void connect(){
+        this.dbType = this.config.TYPE;
+        this.dbHost = this.config.HOST;
+        this.dbUser = this.config.USER;
+        this.dbPass = this.config.PASS;
+        this.dbPort = this.config.PORT;
+        this.dbBase = this.config.BASE;
+        this.dbDriv = this.config.DRIV;
+        this.dbSSl = this.config.SSL;
+        this.dbTimeZone = this.config.TIMEZONE;
 
         this.connString = this.generateConnectionString();
 
         try{
             Class.forName(this.dbDriv);
             this.dbConnection = DriverManager.getConnection(this.connString, this.dbUser, this.dbPass);
+            this.connected = true;
         }
         catch(ClassNotFoundException ex){
             System.out.println("Houve um erro ao carregar o driver: " + ex.getMessage());
@@ -92,9 +100,23 @@ public class DataBase {
         }
     }
 
+    public void execute(String sql, ArrayList<Object> params){
+        try {
+            this.dbPreparedStm = this.dbConnection.prepareStatement(sql);
+            int i = 1;
+            for (Object o:params)
+                this.dbPreparedStm.setObject(i++, o);
+            this.dbPreparedStm.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Houve um erro ao tentar executar um sql (execução) : " + ex.getMessage());
+            System.out.println("[SQL] " + sql);
+        }
+    }
+
     public void disconnect(){
         try {
             this.dbConnection.close();
+            this.connected = false;
         } catch (SQLException ex) {
             System.out.println("Houve um erro ao tentar fechar uma conexão: " + ex.getMessage());
         }

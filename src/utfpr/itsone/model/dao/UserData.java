@@ -3,20 +3,22 @@ package utfpr.itsone.model.dao;
 import utfpr.itsone.config.ConfigurationsSQL;
 import utfpr.itsone.config.hash.BCrypt;
 import utfpr.itsone.data.DataBase;
+import utfpr.itsone.data.DataBaseGeneric;
 import utfpr.itsone.model.User;
 import utfpr.itsone.model.interfaces.ImplementUser;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class UserData implements ImplementUser {
+public class UserData extends DataBaseGeneric implements ImplementUser {
     private ArrayList<User> list;
-    private final DataBase connection = new DataBase(new ConfigurationsSQL());
 
     //Tabela usuarios
     public static final String TABLE_USER = "user";
@@ -25,37 +27,29 @@ public class UserData implements ImplementUser {
     public static final String COLUMN_USER_EMAIL = "email";
     public static final String COLUMN_USER_PASSWORD = "password";
 
-    public static final String INSERT_USER = "INSERT INTO " + TABLE_USER
-            + '(' + COLUMN_USER_USERNAME + "," + COLUMN_USER_EMAIL + "," + COLUMN_USER_PASSWORD
-            + ") VALUES(?,?,?)";
 
-    public static final String CONSULT_USERNAME = "SELECT * FROM "
-            + TABLE_USER + " WHERE username=?";
-
-    public static final String CONSULT_EMAIL = "SELECT * FROM "
-            + TABLE_USER + " WHERE email=?";
-
-    public static final String CONSULT_ID = "SELECT * FROM "
-            + TABLE_USER + " WHERE id=?";
-
-    public static final String UPDATE_USER = "UPDATE " + TABLE_USER
-            + " SET username=?, email=?, password=? WHERE id=?";
+    public UserData() {
+        super(new ConfigurationsSQL(), TABLE_USER);
+    }
 
     @Override
     public void insert(User user) {
-        this.connection.execute(INSERT_USER,
-                user.getUsername(),
-                user.getEmail(),
-                user.getPassword());
+        Map<Object, Object> mapObj = new HashMap<>();
+        mapObj.put(COLUMN_USER_USERNAME, user.getUsername());
+        mapObj.put(COLUMN_USER_EMAIL, user.getEmail());
+        mapObj.put(COLUMN_USER_PASSWORD, user.getPassword());
+        this.genericInsert(mapObj);
     }
 
     @Override
     public void update(User user) {
-        this.connection.execute(UPDATE_USER,
-                user.getUsername(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getId());
+        Map<Object, Object> mapObj = new HashMap<>();
+        Map<Object, Object> mapConditions = new HashMap<>();
+        mapObj.put(COLUMN_USER_USERNAME, user.getUsername());
+        mapObj.put(COLUMN_USER_EMAIL, user.getEmail());
+        mapObj.put(COLUMN_USER_PASSWORD, user.getPassword());
+        mapConditions.put(COLUMN_USER_ID, user.getId());
+        this.genericUpdate(mapObj, mapConditions);
     }
 
     @Override
@@ -66,14 +60,14 @@ public class UserData implements ImplementUser {
     @Override
     public List<User> getUserForName(String name) {
         list = new ArrayList<>();
-        if (getUser(name, CONSULT_USERNAME)) return list;
+        if (getUser(name, COLUMN_USER_USERNAME)) return list;
         return null;
     }
 
     @Override
     public List<User> getUserForEmail(String email) {
         list = new ArrayList<>();
-        if (getUser(email, CONSULT_EMAIL)) return list;
+        if (getUser(email, COLUMN_USER_EMAIL)) return list;
         return null;
     }
 
@@ -81,7 +75,7 @@ public class UserData implements ImplementUser {
     public User getUserForID(int id) {
         User user = new User();
         try {
-            ResultSet rs = this.connection.query(CONSULT_ID, id);
+            ResultSet rs = this.getOne(id);
             while (rs.next())
                 user = addUser(rs);
             return user;
@@ -93,7 +87,7 @@ public class UserData implements ImplementUser {
 
     private boolean getUser(String to, String consult) {
         try {
-            ResultSet rs = this.connection.query(consult, to);
+            ResultSet rs = this.getEqual(consult, to);
             while (rs.next())
                 list.add(addUser(rs));
             return true;

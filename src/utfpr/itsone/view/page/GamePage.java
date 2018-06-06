@@ -1,6 +1,7 @@
 package utfpr.itsone.view.page;
 
 import utfpr.itsone.controller.GameController;
+import utfpr.itsone.controller.Session;
 import utfpr.itsone.model.Game;
 
 import javax.swing.*;
@@ -8,7 +9,13 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -25,26 +32,28 @@ public class GamePage extends ImplementPage {
     private final JPanel panelContent;
     private final JPanel panel;
     private final JLabel title;
+    private JTextPane info;
     private JTextPane text;
-    private JLabel date;
-    private JLabel website;
-    private JLabel rating;
-    private JLabel developer;
     private JLabel cover;
     private Font customFont;
+    private boolean active;
+    private JButton addGame;
+    private JComboBox reviewUser = new JComboBox<Integer>();
 
 
     public GamePage(Game game, GameController controller) throws HeadlessException {
         super(game.getName());
         this.game = game;
         this.controller = controller;
+        this.active = controller.getGameUser(game);
         this.panel = new JPanel(new BorderLayout());
         this.panelControl = new JPanel();
         this.panelInfo = new JPanel(new BorderLayout());
-        this.panelContent = new JPanel();
+        this.panelContent = new JPanel(new BorderLayout());
         this.title = new JLabel(game.getName());
         this.cover = new JLabel();
         this.text = new JTextPane();
+        this.info = new JTextPane();
         setUndecorated(true);
         setPreferredSize(DIMENSIONS);
         revalidate();
@@ -67,6 +76,8 @@ public class GamePage extends ImplementPage {
         panelInfo.add(title,BorderLayout.NORTH);
         panelControl.add(cover);
         panelContent.add(text,BorderLayout.CENTER);
+        panelContent.add(info,BorderLayout.NORTH);
+        panelControl.setPreferredSize(new Dimension(250,1000));
         configComponents();
     }
 
@@ -102,27 +113,43 @@ public class GamePage extends ImplementPage {
         cover.repaint();
         buttons();
 
+        info.setText("Lançamento: " + game.getDate().toString() + "\n"
+                + "Desenvolvedora: " + game.getDeveloper() + "\n"
+                + "Site: " + game.getSite() + "\n"
+                + "Classificação: " + game.getRating() + "\n");
+        info.setPreferredSize(new Dimension(800,100));
+        info.setForeground(Color.WHITE);
+        info.setFont(customFont.deriveFont(Font.TRUETYPE_FONT, 15));
+        info.setEditable(false);
+        info.setOpaque(false);
+
         text.setText(game.getDescription());
         text.setPreferredSize(new Dimension(800,500));
         text.setForeground(Color.WHITE);
         text.setFont(customFont.deriveFont(Font.TRUETYPE_FONT, 15));
         text.setEditable(false);
         text.setOpaque(false);
+
+        panelControl.add(reviewUser);
+        for (int i = 1; i <= 10; i++) {
+            reviewUser.addItem(new Integer(i));
+        }
+        reviewUser.setMaximumSize(new Dimension(305,50));
+
     }
 
     private void buttons() {
-        JButton addGame = new JButton();
+        addGame = new JButton();
         JButton addReview = new JButton();
         Color colorForeground = new Color(0x8D8D8D);
         Color colorBackground = new Color(0xF1F1F1);
-        addGame.setText("ADICIONAR");
         addGame.setForeground(colorForeground);
         addGame.setBackground(colorBackground);
-        addReview.setText("NOTA");
+        addReview.setText("SALVAR NOTA");
         addReview.setForeground(colorForeground);
         addReview.setBackground(colorBackground);
         Border line = new LineBorder(colorForeground);
-        Border margin = new EmptyBorder(10, 20, 10, 20);
+        Border margin = new EmptyBorder(10, 45, 10, 45);
         Border margin2 = new EmptyBorder(10, 35, 10, 35);
         Border compound = new CompoundBorder(line, margin);
         Border compound2 = new CompoundBorder(line, margin2);
@@ -130,6 +157,30 @@ public class GamePage extends ImplementPage {
         addReview.setBorder(compound2);
         panelControl.add(addGame);
         panelControl.add(addReview);
+        setConfig();
+        addGame.addActionListener(e -> {
+            if(Session.getSession().getId()>0) {
+                controller.addGameUser(game, active);
+                this.active = controller.getGameUser(game);
+                setConfig();
+            }
+        });
+        addReview.addActionListener(e -> {
+            if(Session.getSession().getId()>0) {
+                if (!active)
+                    controller.addGameUser(game, false);
+                this.active = controller.getGameUser(game);
+                controller.addReviewGame(game, reviewUser.getSelectedIndex()+1);
+                setConfig();
+            }
+        });
+    }
+
+    public void setConfig(){
+        if (active)
+            addGame.setText("REMOVER");
+        else
+            addGame.setText("ADICIONAR");
     }
 
 }

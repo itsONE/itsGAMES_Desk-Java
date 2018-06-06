@@ -18,6 +18,7 @@ public class ConfigurationsSQL extends Configurations {
         super.PORT = "51325";
         super.BASE = "itsonedb-3337937e";
         super.DRIV = "com.mysql.cj.jdbc.Driver";
-        super.SSL = "&useSSL=true";*/
+        super.SSL = "&useSSL=true";
+        super.TIMEZONE = "&useTimezone=true&serverTimezone=UTC";*/
     }
 }

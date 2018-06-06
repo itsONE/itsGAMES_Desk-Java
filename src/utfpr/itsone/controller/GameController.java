@@ -55,4 +55,20 @@ public class GameController {
         list = implementGame.getAllGameUser(Session.getSession().getId());
         panel.getContent().listAllGames(list);
     }
+
+    public void addGameUser(Game game, boolean exists){
+        if (exists)
+            implementGame.delete(game,Session.getSession().getId());
+        else
+            implementGame.insert(game,Session.getSession().getId());
+    }
+
+    public boolean getGameUser(Game game){
+        return implementGame.getGameUser(game,Session.getSession().getId());
+    }
+
+
+    public void addReviewGame(Game game, int selectedIndex) {
+        implementGame.update(game,Session.getSession().getId(),selectedIndex);
+    }
 }

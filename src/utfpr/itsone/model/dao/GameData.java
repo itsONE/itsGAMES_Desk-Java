@@ -3,6 +3,7 @@ package utfpr.itsone.model.dao;
 import utfpr.itsone.config.ConfigurationsSQL;
 import utfpr.itsone.config.hash.BCrypt;
 import utfpr.itsone.data.DataBase;
+import utfpr.itsone.data.DataBaseGeneric;
 import utfpr.itsone.model.Game;
 import utfpr.itsone.model.interfaces.ImplementGame;
 
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GameData implements ImplementGame {
+public class GameData extends DataBaseGeneric implements ImplementGame {
 
     private ArrayList<Game> list;
     private final DataBase connection = new DataBase(new ConfigurationsSQL());
@@ -35,6 +36,8 @@ public class GameData implements ImplementGame {
     public static final String TABLE_GAME_USER = "game_user";
     public static final String COLUMN_ID_GAME = "game_id";
     public static final String COLUMN_ID_USER = "user_id";
+    public static final String COLUMN_GAME_USER_REVIEW = "review";
+
 
     //Tabela usuarios(id)
     public static final String TABLE_USER = "user";
@@ -60,7 +63,7 @@ public class GameData implements ImplementGame {
             + "=" + COLUMN_ID_GAME;
 
     public static final String VIEW_ALL_GAME_USER = "SELECT * FROM "
-            + TABLE_GAME_USER_VIEW + " WHERE " + COLUMN_USER_ID + "=?";
+            + TABLE_GAME_USER_VIEW + " WHERE " + COLUMN_ID_USER + "=?";
 
     public static final String CONSULT_GAME = "SELECT * FROM "
             + TABLE_GAME_VIEW + " WHERE " + COLUMN_GAME_NAME
@@ -72,24 +75,46 @@ public class GameData implements ImplementGame {
     public static final String VIEW_ALL_GAME_SORT_DATE = VIEW_ALL_GAME
             + " ORDER BY " + COLUMN_GAME_DATE + " DESC ";
 
+    public static final String CONSULT_GAMER_USER = "SELECT * FROM " + TABLE_GAME_USER
+            + " WHERE " + COLUMN_ID_GAME + "=? AND " + COLUMN_ID_USER + "=?";
+
+    public static final String INSERT_GAME_USER = "INSERT INTO " + TABLE_GAME_USER
+            + " VALUES (?,?)";
+
+    public static final String UPDATE_GAME_USER_REVIEW = "UPDATE " + TABLE_GAME_USER
+            + " SET " + COLUMN_GAME_USER_REVIEW + "=?"
+            + " WHERE " + COLUMN_ID_USER + "=? AND " + COLUMN_ID_GAME + "=?";
+
+    public static final String DELETE_GAME_USER = "DELETE FROM " + TABLE_GAME_USER
+            + " WHERE " + COLUMN_ID_USER + "=? AND " + COLUMN_ID_GAME + "=?";
+
+
     public GameData() {
+        //super(new ConfigurationsSQL(), "java_course");
         this.connection.execute(CREATE_GAME_VIEW);
         this.connection.execute(CREATE_GAME_USER_VIEW);
     }
 
     @Override
-    public void insert(Game game) {
-
+    public void insert(Game game, int id) {
+        this.connection.execute(INSERT_GAME_USER,
+                id,
+                game.getId());
     }
 
     @Override
-    public void update(Game game) {
-
+    public void update(Game game, int id, int grade) {
+        this.connection.execute(UPDATE_GAME_USER_REVIEW,
+                grade,
+                id,
+                game.getId());
     }
 
     @Override
-    public void delete(int id) {
-
+    public void delete(Game game, int id) {
+        this.connection.execute(DELETE_GAME_USER,
+                id,
+                game.getId());
     }
 
     @Override
@@ -155,6 +180,7 @@ public class GameData implements ImplementGame {
             game.setName(rs.getString(COLUMN_GAME_NAME));
             game.setDescription(rs.getString(COLUMN_GAME_DESCRIPTION));
             game.setDate(rs.getDate(COLUMN_GAME_DATE));
+            game.setSite(rs.getString(COLUMN_GAME_SITE));
             game.setRating(rs.getString(COLUMN_GAME_RATING).charAt(0));
             game.setDeveloper(rs.getString(COLUMN_GAME_DEVELOPER));
             game.setCover(rs.getString(COLUMN_GAME_COVER));
@@ -163,6 +189,16 @@ public class GameData implements ImplementGame {
             System.out.println("Erro ao ao acessar pelo nome: " + ex.getMessage());
         }
         return game;
+    }
+
+    public boolean getGameUser(Game game, int id){
+        try {
+            ResultSet rs = this.connection.query(CONSULT_GAMER_USER,game.getId(),id);
+            return rs.next();
+        } catch (SQLException ex) {
+            Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     public ArrayList<Game> getList() {
