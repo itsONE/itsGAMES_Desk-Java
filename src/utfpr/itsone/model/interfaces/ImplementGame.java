@@ -12,6 +12,10 @@ public interface ImplementGame {
 
     void delete(Game game, int id);
 
+    int gameReview(Game game, int id);
+
+    float allReview(Game game);
+
     List<Game> getGame(String name);
 
     boolean getGameUser(Game game, int id);

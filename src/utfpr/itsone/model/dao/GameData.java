@@ -79,7 +79,7 @@ public class GameData extends DataBaseGeneric implements ImplementGame {
             + " WHERE " + COLUMN_ID_GAME + "=? AND " + COLUMN_ID_USER + "=?";
 
     public static final String INSERT_GAME_USER = "INSERT INTO " + TABLE_GAME_USER
-            + " VALUES (?,?)";
+            + "(" + COLUMN_ID_USER + "," + COLUMN_ID_GAME +") VALUES (?,?)";
 
     public static final String UPDATE_GAME_USER_REVIEW = "UPDATE " + TABLE_GAME_USER
             + " SET " + COLUMN_GAME_USER_REVIEW + "=?"
@@ -87,6 +87,12 @@ public class GameData extends DataBaseGeneric implements ImplementGame {
 
     public static final String DELETE_GAME_USER = "DELETE FROM " + TABLE_GAME_USER
             + " WHERE " + COLUMN_ID_USER + "=? AND " + COLUMN_ID_GAME + "=?";
+
+    public static final String AVG_GAME_USER = "SELECT AVG(" + COLUMN_GAME_USER_REVIEW
+            + ") AS AVG_REVIEW FROM " + TABLE_GAME_USER + " WHERE " + COLUMN_ID_GAME +"=?";
+
+    public static final String CONSULT_GAMER_USER_REVIEW = "SELECT " + COLUMN_GAME_USER_REVIEW + " FROM "
+            + TABLE_GAME_USER + " WHERE " + COLUMN_ID_GAME + "=? AND " + COLUMN_ID_USER + "=?";
 
 
     public GameData() {
@@ -203,5 +209,25 @@ public class GameData extends DataBaseGeneric implements ImplementGame {
 
     public ArrayList<Game> getList() {
         return list;
+    }
+
+    public int gameReview(Game game, int id){
+        try {
+            ResultSet rs = this.connection.query(CONSULT_GAMER_USER_REVIEW,game.getId(),id);
+            return rs.next()?rs.getInt(COLUMN_GAME_USER_REVIEW):-1;
+        } catch (SQLException ex) {
+            Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+
+    public float allReview(Game game){
+        try {
+            ResultSet rs = this.connection.query(AVG_GAME_USER,game.getId());
+            return rs.next()?rs.getFloat("AVG_REVIEW"): -1;
+        } catch (SQLException ex) {
+            Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
     }
 }

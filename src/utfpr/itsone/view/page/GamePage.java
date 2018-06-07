@@ -39,6 +39,8 @@ public class GamePage extends ImplementPage {
     private boolean active;
     private JButton addGame;
     private JComboBox reviewUser = new JComboBox<Integer>();
+    private JLabel yourReview;
+    private JLabel avgReview;
 
 
     public GamePage(Game game, GameController controller) throws HeadlessException {
@@ -67,21 +69,21 @@ public class GamePage extends ImplementPage {
         setVisible(true);
     }
 
-    public void components(){
-        add(panel,BorderLayout.CENTER);
-        panel.add(panelControl,BorderLayout.WEST);
+    public void components() {
+        add(panel, BorderLayout.CENTER);
+        panel.add(panelControl, BorderLayout.WEST);
         panel.add(panelInfo, BorderLayout.CENTER);
-        panelInfo.add(panelContent,BorderLayout.CENTER);
-        panelControl.setLayout(new BoxLayout(panelControl,BoxLayout.Y_AXIS));
-        panelInfo.add(title,BorderLayout.NORTH);
+        panelInfo.add(panelContent, BorderLayout.CENTER);
+        panelControl.setLayout(new BoxLayout(panelControl, BoxLayout.Y_AXIS));
+        panelInfo.add(title, BorderLayout.NORTH);
         panelControl.add(cover);
-        panelContent.add(text,BorderLayout.CENTER);
-        panelContent.add(info,BorderLayout.NORTH);
-        panelControl.setPreferredSize(new Dimension(250,1000));
+        panelContent.add(text, BorderLayout.CENTER);
+        panelContent.add(info, BorderLayout.NORTH);
+        panelControl.setPreferredSize(new Dimension(250, 1000));
         configComponents();
     }
 
-    public void configComponents(){
+    public void configComponents() {
         panel.setBackground(new Color(0x000715));
         panelControl.setOpaque(false);
         panelInfo.setOpaque(false);
@@ -99,12 +101,12 @@ public class GamePage extends ImplementPage {
         title.setForeground(Color.WHITE);
         title.setFont(customFont.deriveFont(Font.BOLD, 45));
 
-        Dimension dimension = new Dimension(190,270);
+        Dimension dimension = new Dimension(190, 270);
         ImageIcon img = new ImageIcon(game.getCover());
         Image img2 = img.getImage();
-        Image newimg = img2.getScaledInstance(img.getIconWidth(),dimension.height, java.awt.Image.SCALE_SMOOTH);
+        Image newimg = img2.getScaledInstance(img.getIconWidth(), dimension.height, java.awt.Image.SCALE_SMOOTH);
         ImageIcon newIcon = new ImageIcon(newimg);
-        Border line = new LineBorder(new Color(0x001436),2,true);
+        Border line = new LineBorder(new Color(0x001436), 2, true);
         cover.setBorder(line);
         cover.setIcon(newIcon);
         cover.setPreferredSize(dimension);
@@ -117,14 +119,14 @@ public class GamePage extends ImplementPage {
                 + "Desenvolvedora: " + game.getDeveloper() + "\n"
                 + "Site: " + game.getSite() + "\n"
                 + "Classificação: " + game.getRating() + "\n");
-        info.setPreferredSize(new Dimension(800,100));
+        info.setPreferredSize(new Dimension(800, 100));
         info.setForeground(Color.WHITE);
         info.setFont(customFont.deriveFont(Font.TRUETYPE_FONT, 15));
         info.setEditable(false);
         info.setOpaque(false);
 
         text.setText(game.getDescription());
-        text.setPreferredSize(new Dimension(800,500));
+        text.setPreferredSize(new Dimension(800, 500));
         text.setForeground(Color.WHITE);
         text.setFont(customFont.deriveFont(Font.TRUETYPE_FONT, 15));
         text.setEditable(false);
@@ -134,13 +136,18 @@ public class GamePage extends ImplementPage {
         for (int i = 1; i <= 10; i++) {
             reviewUser.addItem(new Integer(i));
         }
-        reviewUser.setMaximumSize(new Dimension(305,50));
+        reviewUser.setMaximumSize(new Dimension(305, 50));
+
+        panelControl.add(yourReview);
+        panelControl.add(avgReview);
 
     }
 
     private void buttons() {
         addGame = new JButton();
         JButton addReview = new JButton();
+        this.yourReview = new JLabel();
+        this.avgReview = new JLabel();
         Color colorForeground = new Color(0x8D8D8D);
         Color colorBackground = new Color(0xF1F1F1);
         addGame.setForeground(colorForeground);
@@ -159,28 +166,44 @@ public class GamePage extends ImplementPage {
         panelControl.add(addReview);
         setConfig();
         addGame.addActionListener(e -> {
-            if(Session.getSession().getId()>0) {
+            if (Session.getSession().getId() > 0) {
                 controller.addGameUser(game, active);
                 this.active = controller.getGameUser(game);
                 setConfig();
             }
         });
         addReview.addActionListener(e -> {
-            if(Session.getSession().getId()>0) {
+            if (Session.getSession().getId() > 0) {
                 if (!active)
                     controller.addGameUser(game, false);
                 this.active = controller.getGameUser(game);
-                controller.addReviewGame(game, reviewUser.getSelectedIndex()+1);
+                controller.addReviewGame(game, reviewUser.getSelectedIndex() + 1);
                 setConfig();
             }
         });
+        yourReview.setForeground(Color.WHITE);
+        yourReview.setFont(customFont.deriveFont(Font.BOLD, 15));
+        avgReview.setForeground(Color.WHITE);
+        avgReview.setFont(customFont.deriveFont(Font.BOLD, 15));
+        yourReview.setBorder(new EmptyBorder(15,5,5,5));
+        avgReview.setBorder(new EmptyBorder(15,5,5,5));
     }
 
-    public void setConfig(){
-        if (active)
+    public void setConfig() {
+        if (active) {
             addGame.setText("REMOVER");
-        else
+            int j = controller.yourReview(game);
+            if (j > 0)
+                yourReview.setText("Sua nota: " + j);
+        } else {
             addGame.setText("ADICIONAR");
+            yourReview.setText("");
+        }
+        float i = controller.avgReview(game);
+        if (i > 0)
+            avgReview.setText("Média Geral: " + i);
+        else
+            avgReview.setText("Média Geral: n/a");
     }
 
 }

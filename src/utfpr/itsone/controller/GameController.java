@@ -71,4 +71,12 @@ public class GameController {
     public void addReviewGame(Game game, int selectedIndex) {
         implementGame.update(game,Session.getSession().getId(),selectedIndex);
     }
+
+    public int yourReview(Game game){
+        return implementGame.gameReview(game, Session.getSession().getId());
+    }
+
+    public float avgReview(Game game){
+        return implementGame.allReview(game);
+    }
 }
