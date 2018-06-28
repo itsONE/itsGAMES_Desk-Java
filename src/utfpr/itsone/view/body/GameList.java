@@ -23,6 +23,10 @@ public class GameList extends JPanel implements MouseListener {
         setOpaque(false);
     }
 
+    public GameList(GameController controller, int v) {
+        this.controller = controller;
+    }
+
     public void createGameView(Game game){
         GameView gameView = new GameView(game);
         this.dimension = sizeGameView();

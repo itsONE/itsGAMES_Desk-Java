@@ -1,6 +1,7 @@
 package utfpr.itsone.view.body;
 
 import utfpr.itsone.controller.GameController;
+import utfpr.itsone.controller.core.ScriptPython;
 import utfpr.itsone.model.Game;
 
 

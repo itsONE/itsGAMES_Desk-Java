@@ -1,6 +1,7 @@
 package utfpr.itsone.view;
 
 import utfpr.itsone.controller.GameController;
+import utfpr.itsone.controller.core.ScriptPython;
 import utfpr.itsone.view.body.Content;
 import utfpr.itsone.view.body.Header;
 import utfpr.itsone.view.menu.Bar;
@@ -9,6 +10,7 @@ import utfpr.itsone.view.menu.TopBar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class Index extends JFrame {
     public static final int WIDTH = 142;
@@ -24,7 +26,7 @@ public class Index extends JFrame {
 
     public Index() throws HeadlessException {
         super(NAME);
-        controller = new GameController(this);
+        controller = new GameController(this, new ScriptPython());
         content = new Content(controller);
         header = new Header();
         bar = new Bar(this,header,content);

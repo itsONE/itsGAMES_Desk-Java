@@ -73,6 +73,20 @@ public class DataBase {
         return null;
     }
 
+    public ResultSet query(String sql,  ArrayList<Object> params){
+        try {
+            this.dbPreparedStm = this.dbConnection.prepareStatement(sql);
+            int i = 1;
+            for (Object o:params)
+                this.dbPreparedStm.setObject(i++, o);
+            return this.dbPreparedStm.executeQuery();
+        } catch (SQLException ex) {
+            System.out.println("Houve um erro ao tentar executar um sql (consulta) : " + ex.getMessage());
+            System.out.println("[SQL] " + sql);
+        }
+        return null;
+    }
+
     public ResultSet query(String sql, Object... params){
         try {
             this.dbPreparedStm = this.dbConnection.prepareStatement(sql);

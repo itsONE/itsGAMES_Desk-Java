@@ -39,7 +39,14 @@ public class DataBaseGeneric extends DataBase {
         this.checkConnection();
         if(!this.checkEmptyTable())
             return null;
-        return this.query("SELECT * FROM " + this.table + " WHERE id=?", id);
+        return this.query("SELECT * FROM " + this.table + " WHERE + "+ this.table +"_id=?", id);
+    }
+
+    public ResultSet getOne(int id, String coll){
+        this.checkConnection();
+        if(!this.checkEmptyTable())
+            return null;
+        return this.query("SELECT * FROM " + this.table + " WHERE "+ coll +"=?", id);
     }
 
     public ResultSet getAll(){
@@ -49,11 +56,52 @@ public class DataBaseGeneric extends DataBase {
         return this.query("SELECT * FROM " + this.table);
     }
 
+    public ResultSet getAllCondition(Map<Object, Object> mapCondition){
+        this.checkConnection();
+        if(!this.checkEmptyTable())
+            return null;
+
+        StringBuilder sql = new StringBuilder();
+        ArrayList<Object> list = new ArrayList<>();
+
+        if (!mapCondition.isEmpty()) {
+            for (Map.Entry<Object, Object> entry : mapCondition.entrySet()) {
+                if(entry.getValue() == null || entry.getValue().equals("")) {
+                    mapCondition.remove(entry.getKey());
+                }
+            }
+        }
+
+        sql.append("SELECT * FROM");
+        sql.append(" ").append(this.table);
+        sql.append(" WHERE");
+        sql.append(" ");
+
+        if (!mapCondition.isEmpty()) {
+            for (Map.Entry<Object, Object> entry : mapCondition.entrySet()) {
+                sql.append(entry.getKey()).append("=").append("?");
+                sql.append(" AND ");
+                list.add(entry.getValue());
+            }
+        }
+
+        sql = new StringBuilder(sql.subSequence(0, sql.length() - 5));
+
+        return this.query(sql.toString(), list);
+    }
+
+    public ResultSet getAllSort(String field){
+        this.checkConnection();
+        if(!this.checkEmptyTable())
+            return null;
+        return this.query("SELECT * FROM " + this.table +" ORDER BY " + field);
+    }
+
     public ResultSet getLike(String field, String value){
         this.checkConnection();
         if(!this.checkEmptyTable())
             return null;
-        return this.query("SELECT * FROM " + this.table + " WHERE " + field + " LIKE '%" + value + "%'");
+        return this.query("SELECT * FROM " + this.table + " WHERE " + field + " ILIKE '%" + value + "%'");
     }
 
     public ResultSet getEqual(String field, String value){
@@ -153,12 +201,12 @@ public class DataBaseGeneric extends DataBase {
         if (!mapCondition.isEmpty()){
             for (Map.Entry<Object, Object> entry : mapCondition.entrySet()) {
                 sql.append(entry.getKey()).append("=").append("?");
-                sql.append(",");
+                sql.append(" AND ");
                 list.add(entry.getValue());
             }
         }
 
-        sql = new StringBuilder(sql.subSequence(0, sql.length() - 1));
+        sql = new StringBuilder(sql.subSequence(0, sql.length() - 5));
 
         this.execute(sql.toString(), list);
     }
@@ -195,5 +243,13 @@ public class DataBaseGeneric extends DataBase {
         sql = new StringBuilder(sql.subSequence(0, sql.length() - 5));
 
         this.execute(sql.toString(), list);
+    }
+
+    public String getTable() {
+        return table;
+    }
+
+    public void setTable(String table) {
+        this.table = table;
     }
 }

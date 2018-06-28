@@ -135,7 +135,7 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `email`, `password`) VALUES
+INSERT INTO user_system (`id`, `username`, `email`, `password`) VALUES
 (1, 'admin', 'admin@admin.com', '$2a$10$YxTd2y/uIDXsqZWThKuV5.etklBtqS8W3xa.lBM0rWU/onfBcJKXu'),
 (3, 'pedro', 'pedro@gmail.com', '$2a$10$O.ppmIUCKT5h4n92VPmSHeYL3gEERTdsUm51ratT31U9X1piNsxeC'),
 (4, 'test', 'test@test.com', '$2a$10$Za/KzVm65n.uOyaqtqurp.qq1bPwKlghKmn8pznjxF95BXXQM.fda'),
@@ -179,7 +179,7 @@ ALTER TABLE `game_user`
 --
 -- Indexes for table `user`
 --
-ALTER TABLE `user`
+ALTER TABLE user_system
   ADD PRIMARY KEY (`id`);
 
 --
@@ -195,7 +195,7 @@ ALTER TABLE `game`
 --
 -- AUTO_INCREMENT for table `user`
 --
-ALTER TABLE `user`
+ALTER TABLE user_system
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --

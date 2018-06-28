@@ -2,7 +2,11 @@ package utfpr.itsone.view.page;
 
 import utfpr.itsone.controller.GameController;
 import utfpr.itsone.controller.Session;
+import utfpr.itsone.controller.core.ScriptPython;
 import utfpr.itsone.model.Game;
+import utfpr.itsone.model.dao.GameData;
+import utfpr.itsone.view.body.GameList;
+import utfpr.itsone.view.body.GameView;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -18,6 +22,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class GamePage extends ImplementPage {
@@ -41,12 +47,16 @@ public class GamePage extends ImplementPage {
     private JComboBox reviewUser = new JComboBox<Integer>();
     private JLabel yourReview;
     private JLabel avgReview;
-
+    private GameList gameList;
+    private ScriptPython sp;
+    private GameData db = new GameData();
 
     public GamePage(Game game, GameController controller) throws HeadlessException {
         super(game.getName());
+        this.gameList = new GameList(controller,5);
         this.game = game;
         this.controller = controller;
+        this.sp = controller.getScriptPython();
         this.active = controller.getGameUser(game);
         this.panel = new JPanel(new BorderLayout());
         this.panelControl = new JPanel();
@@ -79,8 +89,30 @@ public class GamePage extends ImplementPage {
         panelControl.add(cover);
         panelContent.add(text, BorderLayout.CENTER);
         panelContent.add(info, BorderLayout.NORTH);
+        panelContent.add(gameList, BorderLayout.SOUTH);
         panelControl.setPreferredSize(new Dimension(250, 1000));
         configComponents();
+        configRec();
+    }
+
+    public void configRec(){
+        gameList.removeAll();
+        this.gameList.setSizeVal(2);
+        this.gameList.setBackground(new Color(0x000717));
+        try {
+            ArrayList<Integer> game_id = sp.runScript(game.getId());
+            for(Integer id : game_id){
+                this.gameList.createGameView(db.getGame(id));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            for(int i = 0; i < 4; i++)
+                this.gameList.createGameView(game);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            for(int i = 0; i < 4; i++)
+                this.gameList.createGameView(game);
+        }
     }
 
     public void configComponents() {

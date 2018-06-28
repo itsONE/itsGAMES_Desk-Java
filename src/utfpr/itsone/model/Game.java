@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Game {
-    private int id;
+    private short id;
     private String name;
     private String description;
     private Date date;
@@ -18,12 +18,14 @@ public class Game {
     private String developer;
     private BufferedImage cover;
     private BufferedImage background;
+    private String cv;
+    private String bg;
 
-    public int getId() {
+    public short getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(short id) {
         this.id = id;
     }
 
@@ -84,10 +86,20 @@ public class Game {
     }
 
     public void setCover(String cover){
+        this.cv = cover;
         this.cover = setImage("cover", cover);
     }
 
+    public String getCv() {
+        return cv;
+    }
+
+    public String getBg() {
+        return bg;
+    }
+
     public void setBackground(String background) {
+        this.bg = background;
         this.background = createResizedCopy(setImage("background", background),1500,500,true);
     }
 
@@ -143,4 +155,6 @@ public class Game {
         }
         return image;
     }
+
+
 }

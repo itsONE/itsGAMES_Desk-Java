@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="bg" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="utfpr.itsone.controller.HeaderController">
+   <children>
+      <Label fx:id="title" style="-fx-text-fill: #000000;" text="ITSONE">
+         <font>
+            <Font name="HelveticaLTStd-Bold" size="48.0" />
+         </font>
+      </Label>
+   </children>
+</VBox>

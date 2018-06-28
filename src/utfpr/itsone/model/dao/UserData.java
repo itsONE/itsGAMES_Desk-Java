@@ -1,8 +1,6 @@
 package utfpr.itsone.model.dao;
 
 import utfpr.itsone.config.ConfigurationsSQL;
-import utfpr.itsone.config.hash.BCrypt;
-import utfpr.itsone.data.DataBase;
 import utfpr.itsone.data.DataBaseGeneric;
 import utfpr.itsone.model.User;
 import utfpr.itsone.model.interfaces.ImplementUser;
@@ -21,8 +19,8 @@ public class UserData extends DataBaseGeneric implements ImplementUser {
     private ArrayList<User> list;
 
     //Tabela usuarios
-    public static final String TABLE_USER = "user";
-    public static final String COLUMN_USER_ID = "id";
+    public static final String TABLE_USER = "user_system";
+    public static final String COLUMN_USER_ID = "user_system_id";
     public static final String COLUMN_USER_USERNAME = "username";
     public static final String COLUMN_USER_EMAIL = "email";
     public static final String COLUMN_USER_PASSWORD = "password";
@@ -105,10 +103,10 @@ public class UserData extends DataBaseGeneric implements ImplementUser {
     public User addUser(ResultSet rs) {
         User user = new User();
         try {
-            user.setId(rs.getInt("id"));
-            user.setUsername(rs.getString("username"));
-            user.setEmail(rs.getString("email"));
-            user.setPassword(rs.getString("password"));
+            user.setId(rs.getInt(COLUMN_USER_ID));
+            user.setUsername(rs.getString(COLUMN_USER_USERNAME));
+            user.setEmail(rs.getString(COLUMN_USER_EMAIL));
+            user.setPassword(rs.getString(COLUMN_USER_PASSWORD));
         } catch (SQLException ex) {
             System.out.println("Erro ao ao acessar pelo nome: " + ex.getMessage());
         }

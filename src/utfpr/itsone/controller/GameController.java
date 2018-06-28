@@ -1,20 +1,24 @@
 package utfpr.itsone.controller;
 
+import utfpr.itsone.controller.core.ScriptPython;
 import utfpr.itsone.model.Game;
 import utfpr.itsone.model.dao.GameData;
 import utfpr.itsone.model.interfaces.ImplementGame;
 import utfpr.itsone.view.Index;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.List;
 
 public class GameController {
     private final Index panel;
     private final ImplementGame implementGame;
     private List<Game> list;
+    private ScriptPython scriptPython;
 
-    public GameController(Index panel) {
+    public GameController(Index panel, ScriptPython scriptPython) {
         this.panel = panel;
+        this.scriptPython = scriptPython;
         implementGame = new GameData();
         list = implementGame.getAllGame();
     }
@@ -78,5 +82,9 @@ public class GameController {
 
     public float avgReview(Game game){
         return implementGame.allReview(game);
+    }
+
+    public ScriptPython getScriptPython() {
+        return scriptPython;
     }
 }

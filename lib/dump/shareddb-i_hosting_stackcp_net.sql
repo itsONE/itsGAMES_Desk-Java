@@ -82,7 +82,7 @@ CREATE TABLE `game_user` (
   PRIMARY KEY (`user_id`,`game_id`),
   KEY `fk_game_user` (`game_id`),
   CONSTRAINT `fk_game_user` FOREIGN KEY (`game_id`) REFERENCES `game` (`id`),
-  CONSTRAINT `fk_user_game` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `fk_user_game` FOREIGN KEY (`user_id`) REFERENCES user_system (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -211,7 +211,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','admin@admin.com','$2a$10$YxTd2y/uIDXsqZWThKuV5.etklBtqS8W3xa.lBM0rWU/onfBcJKXu'),(3,'pedro','pedro@gmail.com','$2a$10$O.ppmIUCKT5h4n92VPmSHeYL3gEERTdsUm51ratT31U9X1piNsxeC'),(4,'test','test@test.com','$2a$10$Za/KzVm65n.uOyaqtqurp.qq1bPwKlghKmn8pznjxF95BXXQM.fda'),(5,'testar','testar@email.com','$2a$10$I7LJMa.Qa6Emc0DepQTVvO5ytnugsqfi9/yZjhs/V01pw8ajlS4uC');
+INSERT INTO user_system VALUES (1,'admin','admin@admin.com','$2a$10$YxTd2y/uIDXsqZWThKuV5.etklBtqS8W3xa.lBM0rWU/onfBcJKXu'),(3,'pedro','pedro@gmail.com','$2a$10$O.ppmIUCKT5h4n92VPmSHeYL3gEERTdsUm51ratT31U9X1piNsxeC'),(4,'test','test@test.com','$2a$10$Za/KzVm65n.uOyaqtqurp.qq1bPwKlghKmn8pznjxF95BXXQM.fda'),(5,'testar','testar@email.com','$2a$10$I7LJMa.Qa6Emc0DepQTVvO5ytnugsqfi9/yZjhs/V01pw8ajlS4uC');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
