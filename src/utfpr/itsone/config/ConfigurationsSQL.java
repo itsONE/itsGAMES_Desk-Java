@@ -5,7 +5,7 @@ public class ConfigurationsSQL extends Configurations {
         super.TYPE = "postgresql";
         super.HOST = "localhost";
         super.USER = "postgres";
-        super.PASS = "106868";
+        super.PASS = "";
         super.PORT = "5432";
         super.BASE = "one";
         super.DRIV = "org.postgresql.Driver";
