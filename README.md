@@ -6,8 +6,6 @@
  ``` bash
 # link para editar a doc
 ```
-https://docs.google.com/document/d/14rLUoASmCCZl376iqQ-EaDOeGM9ZaSInqif2wt2Tlnw/edit?usp=sharing
-
  
  
  
